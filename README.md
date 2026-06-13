@@ -1,6 +1,8 @@
-# Customer Segmentation (RFM Analysis)
+# Customer Segmentation (RFM Analysis) - Demo Project
 
 Segment customers into meaningful groups using Recency, Frequency, and Monetary scoring. This analysis helps businesses target the right customers with the right strategies.
+
+This is a demo project using synthetic data to demonstrate RFM analysis techniques.
 
 ## Problem
 
