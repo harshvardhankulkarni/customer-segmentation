@@ -1,22 +1,36 @@
-# Customer Segmentation (RFM Analysis) - Demo Project
+<!-- GSD -->
 
-Segment customers into meaningful groups using Recency, Frequency, and Monetary scoring. This analysis helps businesses target the right customers with the right strategies.
+# Customer Segmentation (RFM Analysis)
 
-This is a demo project using synthetic data to demonstrate RFM analysis techniques.
+Segment customers into actionable groups using Recency, Frequency, and Monetary scoring. Generates 200 synthetic customer profiles, assigns them to 5 segments (Champions, Loyal Customers, Potential Loyalists, At Risk, Lost), and outputs a static 4-panel visualization, an interactive Plotly HTML chart, and a CSV export.
+
+This is a demo / portfolio project.
+
+## Features
+
+- Generates 200 synthetic customer profiles with realistic distributions (exponential recency, Poisson frequency, exponential monetary value)
+- Quintile-based RFM scoring (1-5 per dimension, 3-15 total)
+- 5 customer segments with business-actionable labels
+- 4-panel static visualization (segment distribution, avg spend by segment, recency vs spend scatter, frequency histogram)
+- Interactive Plotly HTML chart with hover details, zoom, and pan
+- CSV export of all customer data with RFM scores and segment assignments
+- Console output with key metrics and revenue breakdown
 
 ## Tech Stack
 
-- Python 3.8+
-- Pandas 2.0+ - Data manipulation and RFM scoring
-- NumPy 1.24+ - Numerical operations
-- Matplotlib 3.7+ - Visualization
-- Seaborn 0.12+ - Statistical plotting
+| Technology | Purpose |
+|------------|---------|
+| Python 3.8+ | Runtime |
+| Pandas | Data manipulation and RFM scoring |
+| NumPy | Random data generation and numerical ops |
+| Matplotlib + Seaborn | Static visualization |
+| Plotly | Interactive HTML chart |
 
 ## Quick Start
 
 ### Prerequisites
 
-- Python 3.8 or higher installed
+- Python 3.8 or higher
 - pip package manager
 
 ### Installation
@@ -24,80 +38,76 @@ This is a demo project using synthetic data to demonstrate RFM analysis techniqu
 ```bash
 git clone https://github.com/harshvardhankulkarni/customer-segmentation.git
 cd customer-segmentation
-pip install pandas numpy matplotlib seaborn
+pip install pandas numpy matplotlib seaborn plotly
 ```
 
-### Running
+### Run the Analysis
 
 ```bash
 python 1_customer_segmentation.py
 ```
 
-Expected output:
+### Run the Interactive Version
+
+```bash
+python generate_interactive.py
+```
+
+### Expected Output
 
 ```
 Saved: 1_customer_segments.png
+
 --- CUSTOMER SEGMENTATION RESULTS ---
 Total customers analyzed: 200
-Champions: 17 customers (8.5%)
-Loyal Customers: 77 customers (38.5%)
-...
+
+Segment breakdown:
+  Champions: 17 customers (8.5%) - Avg spend: Rs.2074
+  Loyal Customers: 77 customers (38.5%) - Avg spend: Rs.2145
+  Potential Loyalists: 80 customers (40.0%) - Avg spend: Rs.1936
+  At Risk: 18 customers (9.0%) - Avg spend: Rs.2530
+  Lost: 8 customers (4.0%) - Avg spend: Rs.2313
+
+Top revenue driver: Loyal Customers (Rs.165125)
+Action: Target Loyal Customers with loyalty program to increase retention.
+
 Exported: customer_segments_output.csv
 Done.
+Saved: 1_customer_segments_interactive.html
 ```
 
-### Output Files
+## Output Files
 
 | File | Description |
 |------|-------------|
-| 1_customer_segments.png | 4-panel visualization chart |
-| customer_segments_output.csv | Segmented customer data with RFM scores |
+| `1_customer_segments.png` | 4-panel static visualization (150 DPI) |
+| `1_customer_segments_interactive.html` | Interactive Plotly chart with hover, zoom, pan |
+| `customer_segments_output.csv` | 200 customer records with RFM scores and segment |
 
-## How It Works
+## GitHub Pages
 
-The script generates 200 synthetic customer profiles with purchase history. Each customer gets scored on three dimensions:
-
-1. **Recency** - Days since last purchase. Lower is better. Scored 1-5.
-2. **Frequency** - Total number of purchases. Higher is better. Scored 1-5.
-3. **Monetary** - Total amount spent. Higher is better. Scored 1-5.
-
-The combined RFM score (range 3-15) maps customers to one of five segments:
-
-| Score Range | Segment | Strategy |
-|-------------|---------|----------|
-| 13-15 | Champions | Loyalty programs, exclusive access |
-| 10-12 | Loyal Customers | Upsell, cross-sell, membership perks |
-| 7-9 | Potential Loyalists | Engagement campaigns, recommendations |
-| 5-6 | At Risk | Re-engagement, special discounts |
-| 3-4 | Lost | Last-resort offers, clean from lists |
+Portfolio page: https://harshvardhankulkarni.github.io/customer-segmentation/
 
 ## Project Structure
 
 ```
 customer-segmentation/
-  1_customer_segmentation.py   Main analysis script
-  README.md                    This file
-  docs/
-    architecture.md             Design and methodology
-    runbook.md                  Operations guide
+├── 1_customer_segmentation.py        Main analysis script
+├── 1_customer_segmentation.ipynb     Jupyter notebook version
+├── generate_interactive.py           Plotly interactive HTML generator
+├── index.html                        GitHub Pages portfolio page
+├── customer_segments_output.csv      Generated output data
+├── 1_customer_segments.png           Static visualization output
+├── 1_customer_segments_interactive.html  Interactive chart output
+├── README.md
+└── docs/
+    ├── ARCHITECTURE.md
+    ├── GETTING-STARTED.md
+    ├── DEVELOPMENT.md
+    ├── TESTING.md
+    └── CONFIGURATION.md
 ```
-
-## Configuration
-
-All parameters are at the top of the script for easy modification:
-
-- `n_customers` - Number of customers to generate (default: 200)
-- `np.random.seed(42)` - Set to any integer for reproducible results
-- Segment score thresholds in `assign_segment()` function
-
-## Contributing
-
-1. Fork the repository.
-2. Create a feature branch.
-3. Make your changes.
-4. Run the script to verify output.
-5. Submit a pull request.
 
 ## License
 
-MIT
+Demo project. No license specified.

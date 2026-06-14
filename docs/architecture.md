@@ -1,89 +1,68 @@
-# Architecture: Customer Segmentation
+<!-- GSD -->
 
-## Context
+# Customer Segmentation (RFM Analysis) — Architecture
 
-Businesses need to understand their customer base to allocate marketing spend effectively. Treating all customers the same wastes money. RFM analysis provides a data-driven way to segment customers based on actual purchase behavior.
+## Context and Goals
 
-## Goals
+This project segments synthetic customer profiles using RFM (Recency, Frequency, Monetary) analysis. It is a portfolio demo demonstrating customer segmentation techniques with Python data analysis libraries.
 
-- Segment customers into actionable groups.
-- Identify high-value customers for retention.
-- Flag at-risk customers for re-engagement.
-- Produce a visual report and a structured data export.
-
-## Design
-
-### Data Flow
+## Data Flow
 
 ```
-Synthetic Data Generator
-        |
-        v
-Raw Customer Profiles (200 records)
-        |
-        v
-RFM Score Calculator
-  - Recency: days since last purchase (inverted)
-  - Frequency: total purchase count
-  - Monetary: total spend
-        |
-        v
-Segment Assignment (5 groups by score thresholds)
-        |
-        +---> Visualization (4-panel chart)
-        +---> CSV Export (segmented data)
-        +---> Console Output (key metrics)
+Synthetic Data Generation (200 profiles)
+  → Recency: exponential distribution
+  → Frequency: Poisson distribution  
+  → Monetary: exponential distribution
+  → Quintile-based RFM scoring (1-5 per dimension)
+  → Composite score (3-15) mapped to 5 segments
+  → 4-panel static matplotlib visualization
+  → Interactive Plotly HTML chart
+  → CSV export with segment labels
 ```
 
-### Scoring Logic
+## Components
 
-Each dimension uses quintile-based scoring:
+| File | Role |
+|------|------|
+| `1_customer_segmentation.py` | Main RFM analysis: data generation, scoring, segmentation, static chart, CSV export |
+| `generate_interactive.py` | Generates interactive Plotly HTML version |
+| `1_customer_segmentation.ipynb` | Jupyter notebook for exploratory development |
+| `customer_segments_output.csv` | Generated output with 200 customer records |
+| `1_customer_segments.png` | Static 4-panel visualization |
+| `1_customer_segments_interactive.html` | Interactive Plotly chart |
 
-```python
-def rfm_score(series, reverse=False):
-    quintiles = pd.qcut(series, 5, labels=[1,2,3,4,5], duplicates='drop')
-    if reverse:
-        return quintiles.astype(int)
-    return (6 - quintiles.astype(int))
-```
-
-- Recency uses reverse scoring (lower days = higher score).
-- Frequency and Monetary use standard scoring (higher = higher score).
-
-### Segment Mapping
-
-```
-RFM Total 3-4   -> Lost
-RFM Total 5-6   -> At Risk
-RFM Total 7-9   -> Potential Loyalists
-RFM Total 10-12 -> Loyal Customers
-RFM Total 13-15 -> Champions
-```
-
-## Key Decisions
+## Design Decisions
 
 | Decision | Rationale |
 |----------|-----------|
-| Synthetic data instead of real data | Self-contained. No external dependencies. Reproducible. |
-| Quintile-based scoring | Standard RFM practice. Handles skewed distributions well. |
-| 5 segments | Matches industry convention. Actionable without being too granular. |
-| PNG output | Universal format. Easy to share, embed, or present. |
+| Quintile-based scoring | Simple, interpretable approach. Each dimension gets equal weight (1-5). |
+| 200 synthetic customers | Sufficient for demonstrating segmentation patterns without overwhelming data volume |
+| 5 segments | Matches common RFM convention (Champions, Loyal, Potential, At Risk, Lost) |
+| Synthetic data | Focus on the analysis technique rather than data collection |
+| Static + interactive charts | Static for reports, interactive for exploration |
 
 ## Trade-offs
 
-- **Simplicity vs accuracy**: Quintile scoring is simple but may not capture nonlinear relationships. More sophisticated methods (k-means, hierarchical clustering) could find better segments but require more tuning.
-- **Synthetic data**: The insights are illustrative, not actionable for real businesses. Real data would require privacy handling and data quality checks.
-- **Static analysis**: This is a one-time batch process. A production system would need incremental updates as new orders come in.
+- Synthetic data lacks real-world anomalies and unpredictable patterns
+- Quintile scoring assumes equal weight for R, F, and M dimensions
+- 5 segments may oversimplify complex customer bases
+- No time-based cohort tracking (static snapshot, not longitudinal)
 
-## Integration Points
+## File Organization
 
-- **Input**: None (self-generates data). To use real data, replace the generation block with a CSV import using `pd.read_csv()`.
-- **Output**: `customer_segments_output.csv` can feed into CRM systems, email marketing tools, or BI dashboards.
-- **Extending**: Add more features (customer lifetime value, churn probability) by adding new scoring dimensions.
-
-## Dependencies
-
-- Python 3.8+
-- pandas, numpy, matplotlib, seaborn
-
-No external APIs, databases, or network access required.
+```
+customer-segmentation/
+├── 1_customer_segmentation.py
+├── generate_interactive.py
+├── 1_customer_segmentation.ipynb
+├── 1_customer_segments.png
+├── 1_customer_segments_interactive.html
+├── customer_segments_output.csv
+├── index.html
+└── docs/
+    ├── ARCHITECTURE.md
+    ├── GETTING-STARTED.md
+    ├── DEVELOPMENT.md
+    ├── TESTING.md
+    └── CONFIGURATION.md
+```
